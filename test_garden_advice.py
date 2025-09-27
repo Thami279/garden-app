@@ -8,31 +8,22 @@ from garden_advice import get_garden_advice
 
 
 class TestGardenAdvice(unittest.TestCase):
-    def test_spring_advice(self):
-        result = get_garden_advice("spring")
-        self.assertIn("roses", result)
+    def test_month_overrides_season(self):
+        result = get_garden_advice(month="March", season="winter")
+        self.assertIn("hardy greens", result)
 
-    def test_summer_advice(self):
-        result = get_garden_advice("summer")
-        self.assertIn("Water deeply", result)
+    def test_season_used_when_month_missing(self):
+        result = get_garden_advice(season="Spring")
+        self.assertIn("seeds indoors", result)
 
-    def test_autumn_advice(self):
-        result = get_garden_advice("autumn")
-        self.assertIn("Harvest vegetables", result)
+    def test_fall_and_autumn_equivalence(self):
+        result_fall = get_garden_advice(season="fall")
+        result_autumn = get_garden_advice(season="autumn")
+        self.assertEqual(result_fall, result_autumn)
 
-    def test_winter_advice(self):
-        result = get_garden_advice("winter")
-        self.assertIn("frost", result)
-
-    def test_unknown_season_returns_fallback(self):
-        result = get_garden_advice("unknown")
-        self.assertEqual("No advice available for this season.", result)
-
-    def test_case_sensitive_season(self):
-        result_upper = get_garden_advice("SPRING")
-        result_lower = get_garden_advice("spring")
-        self.assertNotEqual(result_upper, result_lower)
-        self.assertEqual("No advice available for this season.", result_upper)
+    def test_unknown_inputs_return_generic(self):
+        result = get_garden_advice(month="Smarch", season="rainy")
+        self.assertIn("Remember to water your plants", result)
 
 
 if __name__ == "__main__":
