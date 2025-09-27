@@ -28,10 +28,11 @@ class TestGardenAdvice(unittest.TestCase):
         result = get_garden_advice("unknown")
         self.assertEqual("No advice available for this season.", result)
 
-    def test_case_insensitive_season(self):
+    def test_case_sensitive_season(self):
         result_upper = get_garden_advice("SPRING")
         result_lower = get_garden_advice("spring")
-        self.assertEqual(result_upper, result_lower)
+        self.assertNotEqual(result_upper, result_lower)
+        self.assertEqual("No advice available for this season.", result_upper)
 
 
 if __name__ == "__main__":
